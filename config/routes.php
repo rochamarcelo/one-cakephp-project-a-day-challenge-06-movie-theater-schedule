@@ -56,6 +56,17 @@ $routes->scope('/', function (RouteBuilder $builder) {
      * ...and connect the rest of 'Pages' controller's URLs.
      */
     $builder->connect('/pages/*', 'Pages::display');
+    $builder->connect(
+        '/schedule/{year}/{month}/{day}',
+        [
+            'controller' => 'schedules',
+            'action' => 'index',
+        ]
+    )->setPatterns([
+        'year' => '[12][0-9]{3}',
+        'month' => '0[1-9]|1[012]',
+        'day' => '0[1-9]|[12][0-9]|3[01]'
+    ]);
 
     /*
      * Connect catchall routes for all controllers.
@@ -80,10 +91,10 @@ $routes->scope('/', function (RouteBuilder $builder) {
  * ```
  * $routes->scope('/api', function (RouteBuilder $builder) {
  *     // No $builder->applyMiddleware() here.
- *     
+ *
  *     // Parse specified extensions from URLs
  *     // $builder->setExtensions(['json', 'xml']);
- *     
+ *
  *     // Connect API actions here.
  * });
  * ```

@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Schedule;
+use Cake\I18n\Date;
 use Cake\ORM\Query;
+use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -92,5 +95,45 @@ class SchedulesTable extends Table
         $rules->add($rules->existsIn(['screen_id'], 'Screens'), ['errorField' => 'screen_id']);
 
         return $rules;
+    }
+
+    /**
+     * @param Query $query
+     * @param $options
+     * @return Query
+     */
+    public function findOnDate(Query $query, $options): Query
+    {
+        $date = $options['date'] ?? null;
+        if ($date === null) {
+            $date = new Date();
+        }
+        if (is_array($date)) {
+            $date = Date::createFromArray($date);
+        }
+        $end = clone $date;
+        $end->modify('+1 day');
+        $query = $query->contain(['Movies', 'Screens']);
+
+        return $query
+            ->where([
+            $query->newExpr()->gte('start_time', $date),
+            $query->newExpr()->lt('start_time', $end),
+        ])->formatResults(function(ResultSet $results) {
+            return $results->groupBy('movie_id')
+                ->map(function($schedules) {
+                    /**
+                     * @var \App\Model\Entity\Movie $movie
+                     */
+                    $movie = $schedules[0]['movie'];
+                    $movie->schedules_by_screen = collection($schedules)->map(function(Schedule $schedule) {
+                        $schedule->movie = null;
+
+                        return $schedule;
+                    })->groupBy('screen_id')->toArray();
+
+                    return $movie;
+                });
+        });
     }
 }
