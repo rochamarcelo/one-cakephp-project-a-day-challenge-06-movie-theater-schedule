@@ -1,4 +1,4 @@
-# One CakePHP project a day challenge - Day 05 Movie Theater Schedule
+# One CakePHP project a day challenge - Day 06 Movie Theater Schedule
 
 On this project I'm using CakePHP 4 and Boostrap 5
 
