@@ -106,10 +106,7 @@ class SchedulesTable extends Table
     {
         $date = $options['date'] ?? null;
         if ($date === null) {
-            $date = new Date();
-        }
-        if (is_array($date)) {
-            $date = Date::createFromArray($date);
+            throw new \InvalidArgumentException(__('Options key "date" should not be empty'));
         }
         $end = clone $date;
         $end->modify('+1 day');

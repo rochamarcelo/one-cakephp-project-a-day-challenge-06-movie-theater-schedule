@@ -59,7 +59,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect(
         '/schedule/{year}/{month}/{day}',
         [
-            'controller' => 'schedules',
+            'controller' => 'Schedules',
             'action' => 'index',
         ]
     )->setPatterns([

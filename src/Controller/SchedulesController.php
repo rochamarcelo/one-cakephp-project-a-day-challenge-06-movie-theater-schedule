@@ -20,15 +20,24 @@ class SchedulesController extends AppController
      */
     public function index()
     {
-        $date = [
+        $selectedDate = [
             'year' => $this->request->getParam('year'),
             'month' => $this->request->getParam('month'),
             'day' => $this->request->getParam('day'),
         ];
+        if ($selectedDate['year']) {
+            $selectedDate = Date::createFromArray($selectedDate);
+        } else {
+            $selectedDate = new Date();
+        }
         $scheduledMovies = $this->Schedules->find('onDate', [
-            'date' => $date['year'] ? $date : null,
+            'date' => $selectedDate,
         ]);
-
-        $this->set(compact('scheduledMovies'));
+        $firstDay = new Date();
+        $dates = [$firstDay];
+        for ($day = 1; $day < 7; $day++) {
+            $dates[] = $firstDay->copy()->modify("+$day days");
+        }
+        $this->set(compact('scheduledMovies', 'dates', 'firstDay', 'selectedDate'));
     }
 }

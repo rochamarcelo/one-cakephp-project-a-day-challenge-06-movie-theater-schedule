@@ -2,18 +2,28 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Movie[] $scheduledMovies
+ * @var \Cake\I18n\Date[] $dates
+ * @var \Cake\I18n\Date $firstDay
+ * @var \Cake\I18n\Date $selectedDate
  */
 ?>
 <ul class="nav nav-pills mb-3">
-    <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="#">Today</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Jul, 18</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Jul, 19</a>
-    </li>
+    <?php foreach ($dates as $date):?>
+        <li class="nav-item">
+            <?= $this->Html->link(
+                $date == $firstDay ? __('Today') : $date->format('M, d'),
+                [
+                    'action' => 'index',
+                    'year' => $date->format('Y'),
+                    'month' => $date->format('m'),
+                    'day' => $date->format('d'),
+                ],
+                [
+                    'class' => 'nav-link' . ($selectedDate == $date ? ' active' : ''),
+                ]
+            )?>
+        </li>
+    <?php endforeach;?>
 </ul>
 <?php foreach ($scheduledMovies as $movie):?>
 <div class="card mb-3">
