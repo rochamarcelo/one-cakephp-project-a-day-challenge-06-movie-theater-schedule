@@ -14,6 +14,7 @@ use Cake\ORM\Entity;
  * @property int $duration
  *
  * @property \App\Model\Entity\Schedule[] $schedules
+ * @property \App\Model\Entity\Schedule[][] $schedules_by_screen
  */
 class Movie extends Entity
 {
