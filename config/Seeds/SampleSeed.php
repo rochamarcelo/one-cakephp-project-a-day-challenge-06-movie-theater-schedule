@@ -4,9 +4,9 @@ declare(strict_types=1);
 use Migrations\AbstractSeed;
 
 /**
- * Schedules seed.
+ * Sample seed.
  */
-class SchedulesSeed extends AbstractSeed
+class SampleSeed extends AbstractSeed
 {
     /**
      * Run Method.
@@ -19,6 +19,74 @@ class SchedulesSeed extends AbstractSeed
      * @return void
      */
     public function run()
+    {
+        $this->movies();
+        $this->screens();
+        $this->schedules();
+    }
+
+    protected function screens(): void
+    {
+        $data = [
+            [
+                'id' => 1,
+                'name' => 'Sala 1',
+                'tags' => 'DUB'
+            ],
+            [
+                'id' => 2,
+                'name' => 'Sala 2',
+                'tags' => 'PLUS',
+            ],
+            [
+                'id' => 3,
+                'name' => 'Sala 3',
+                'tags' => 'EXP|PLUS',
+            ],
+            [
+                'id' => 4,
+                'name' => 'Sala 4 - Max',
+                'tags' => 'MAX',
+            ],
+            [
+                'id' => 5,
+                'name' => 'Sala 5',
+                'tags' => 'EXP',
+            ],
+        ];
+
+        $table = $this->table('screens');
+        $table->insert($data)->save();
+    }
+
+    protected function movies(): void
+    {
+        $data = [
+            [
+                'id' => 10,
+                'name' => 'Viúva Negra',
+                'synopsis' => 'No novo filme da Marvel Studios, Viúva Negra precisa confrontar partes de sua história quando surge uma conspiração perigosa ligada ao seu passado.',
+                'duration' => 130,
+            ],
+            [
+                'id' => 15,
+                'name' => 'Space Jam: Um Novo Legado',
+                'synopsis' => 'Quando LeBron e seu filho Dom são aprisionados em um espaço digital por uma I.A. trapaceira, LeBron precisa trazê-los de volta para casa em segurança levando o Pernalonga, a Lola Bunny e uma equipe indisciplinada de Looney Tunes a uma vitória contra os campeões digitais da I.A',
+                'duration' => 115,
+            ],
+            [
+                'id' => 20,
+                'name' => 'Velozes e Furiosos 9',
+                'synopsis' => 'Nono filme da série Velozes & Furiosos, e segundo da nova trilogia (Velozes 8, 9 e 10), que não conta mais com a presença de Paul Walker, falecido em 2013.',
+                'duration' => 140,
+            ],
+        ];
+
+        $table = $this->table('movies');
+        $table->insert($data)->save();
+    }
+
+    protected function schedules(): void
     {
         $data = [
             [
